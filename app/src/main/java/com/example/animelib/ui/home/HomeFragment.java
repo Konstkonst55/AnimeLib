@@ -8,18 +8,13 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.animelib.R;
-import com.example.animelib.adapters.MainScreenCard;
-import com.example.animelib.adapters.MainScreenCardAdapter;
 import com.example.animelib.adapters.MainScreenRVConfig;
 import com.example.animelib.databinding.FragmentHomeBinding;
 import com.example.animelib.firebase.Anime;
 import com.example.animelib.firebase.DataStatus;
 import com.example.animelib.firebase.FireBaseHelper;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
@@ -35,7 +30,7 @@ public class HomeFragment extends Fragment {
         init();
 
         binding.bShowMore.setOnClickListener(view -> {
-            //todo
+            //todo ShowMore
         });
 
         return root;
@@ -49,7 +44,7 @@ public class HomeFragment extends Fragment {
         new FireBaseHelper().readData(new DataStatus() {
             @Override
             public void DataIsLoaded(List<Anime> anime, List<String> keys) {
-                new MainScreenRVConfig().setConfig(binding.rvMainCards, getContext(), anime, keys);
+                new MainScreenRVConfig().setConfig(binding.rvMainCards, getContext(), anime);
             }
 
             @Override

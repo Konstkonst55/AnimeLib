@@ -10,8 +10,12 @@ public class Anime {
     private String video;
     private String type;
     private String description;
+    private String date;
 
-    public Anime(String name, String genre, String episodes, String duration, String image, String video, String type, String description) {
+    public Anime(){
+    }
+
+    public Anime(String name, String genre, String episodes, String duration, String image, String video, String type, String description, String date) {
         this.name = name;
         this.genre = genre;
         this.episodes = episodes;
@@ -20,6 +24,7 @@ public class Anime {
         this.video = video;
         this.type = type;
         this.description = description;
+        this.date = date;
     }
 
     public String getName() {
@@ -84,5 +89,13 @@ public class Anime {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

@@ -1,7 +1,6 @@
 package com.example.animelib.adapters;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -17,7 +16,6 @@ public class MainScreenCard extends RecyclerView.ViewHolder {
 
     private final TextView name;
     private final ImageView image;
-    private String key;
 
     public MainScreenCard(ViewGroup parent, Context context){
         super(LayoutInflater.from(context).inflate(R.layout.card_item_main, parent, false));
@@ -25,9 +23,8 @@ public class MainScreenCard extends RecyclerView.ViewHolder {
         image = itemView.findViewById(R.id.ivAnimePicture);
     }
 
-    public void bind(Anime anime, String key){
+    public void bind(Anime anime){
         name.setText(anime.getName());
         new DownloadImageTask(image).execute(anime.getImage());
-        this.key = key;
     }
 }
