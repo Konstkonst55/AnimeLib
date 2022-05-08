@@ -1,4 +1,4 @@
-package com.example.animelib.adapters;
+package com.example.animelib.adapters.favourite;
 
 public class Favourite {
 

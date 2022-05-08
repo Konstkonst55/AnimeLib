@@ -7,20 +7,20 @@
     tools:context=".ui.home.HomeFragment"
     android:orientation="vertical">
 
-    <androidx.appcompat.widget.SearchView
-        android:id="@+id/svSearch"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/txt"
-        android:textSize="18sp"
-        android:layout_margin="10dp"
-        android:layout_gravity="end"/>
+<!--    <androidx.appcompat.widget.SearchView-->
+<!--        android:id="@+id/svSearch"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        style="@style/txt"-->
+<!--        android:textSize="18sp"-->
+<!--        android:layout_margin="10dp"-->
+<!--        android:layout_gravity="end"/>-->
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:src="@drawable/divider"
-        android:contentDescription="@string/cd_search"/>
+<!--    <ImageView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="2dp"-->
+<!--        android:src="@drawable/divider"-->
+<!--        android:contentDescription="@string/cd_search"/>-->
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -29,7 +29,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginTop="20dp">
 
             <TextView
                 android:layout_width="match_parent"

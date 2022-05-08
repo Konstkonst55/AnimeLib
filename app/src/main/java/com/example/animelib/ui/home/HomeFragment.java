@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.animelib.adapters.MainScreenRVConfig;
+import com.example.animelib.adapters.main.MainScreenRVConfig;
 import com.example.animelib.databinding.FragmentHomeBinding;
 import com.example.animelib.firebase.Anime;
 import com.example.animelib.firebase.DataStatus;

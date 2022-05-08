@@ -10,8 +10,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.animelib.adapters.Favourite;
-import com.example.animelib.adapters.FavouriteAdapter;
+import com.example.animelib.adapters.favourite.Favourite;
+import com.example.animelib.adapters.favourite.FavouriteAdapter;
 import com.example.animelib.databinding.FragmentFavouritesBinding;
 
 import java.util.ArrayList;

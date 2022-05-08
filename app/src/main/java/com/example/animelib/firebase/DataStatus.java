@@ -1,7 +1,5 @@
 package com.example.animelib.firebase;
 
-import com.example.animelib.adapters.MainScreenCard;
-
 import java.util.List;
 
 public interface DataStatus{

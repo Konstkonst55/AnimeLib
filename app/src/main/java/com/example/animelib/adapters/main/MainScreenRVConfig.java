@@ -1,4 +1,4 @@
-package com.example.animelib.adapters;
+package com.example.animelib.adapters.main;
 
 import android.content.Context;
 

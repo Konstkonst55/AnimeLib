@@ -23,4 +23,5 @@
     <string name="title_browse">Просмотр</string>
     <string name="title_watch">Смотреть</string>
     <string name="cd_divider">Divider</string>
+    <string name="cd_logo">Logo</string>
 </resources>
