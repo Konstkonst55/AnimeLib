@@ -44,8 +44,6 @@ public class MainScreenCardAdapter extends RecyclerView.Adapter<MainScreenCard> 
             i.putExtra("duration", cardList.get(position).getDuration());
             i.putExtra("description", cardList.get(position).getDescription());
             i.putExtra("date", cardList.get(position).getDate());
-            i.putExtra("is_favourite", cardList.get(position).getIsFavourite());
-            i.putExtra("is_viewed", cardList.get(position).getViewed());
             i.putExtra("image", cardList.get(position).getImage());
             i.putExtra("video", cardList.get(position).getVideo());
             Log.i("ID_EXTRA", Objects.requireNonNull(cardList.get(position).getKey()));

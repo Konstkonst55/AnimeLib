@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
         setToolbar();
 
+        //нижняя навигация
         BottomNavigationView navView = findViewById(R.id.nav_view);
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_home,
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(binding.navView, navController);
     }
 
+    //установка параметров для тулбара
     private void setToolbar() {
         toolbar = Objects.requireNonNull(getSupportActionBar());
         toolbar.setHomeButtonEnabled(true);
@@ -56,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.black)));
     }
 
+    //функция поиска внутри тулбара
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.top_toolbar, menu);

@@ -11,14 +11,12 @@ public class Anime {
     private String type;
     private String description;
     private String date;
-    private Boolean IsFavourite;
-    private Boolean IsViewed;
     private String KEY;
 
     public Anime(){
     }
 
-    public Anime(String name, String genre, String episodes, String duration, String image, String video, String type, String description, String date, Boolean isFavourite, Boolean isViewed, String key) {
+    public Anime(String name, String genre, String episodes, String duration, String image, String video, String type, String description, String date, String key) {
         this.name = name;
         this.genre = genre;
         this.episodes = episodes;
@@ -28,8 +26,6 @@ public class Anime {
         this.type = type;
         this.description = description;
         this.date = date;
-        this.IsFavourite = isFavourite;
-        this.IsViewed = isViewed;
         this.KEY = key;
     }
 
@@ -103,22 +99,6 @@ public class Anime {
 
     public void setDate(String date) {
         this.date = date;
-    }
-
-    public Boolean getIsFavourite() {
-        return IsFavourite;
-    }
-
-    public void setIsFavourite(Boolean isFavourite) {
-        IsFavourite = isFavourite;
-    }
-
-    public Boolean getViewed() {
-        return IsViewed;
-    }
-
-    public void setViewed(Boolean viewed) {
-        IsViewed = viewed;
     }
 
     public String getKey() {

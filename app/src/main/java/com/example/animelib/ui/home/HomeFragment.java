@@ -50,13 +50,14 @@ public class HomeFragment extends Fragment {
     }
 
     private void initCardItem(int limit) {
+        //вывод данных
         if(!binding.bShowMore.isChecked()){
             Query ref = FirebaseDatabase.getInstance().getReference("AnimeList");
-            new FireBaseHelper(ref).readData((anime, keys) ->
+            new FireBaseHelper(ref, requireContext()).readData((anime, keys) ->
                     new MainScreenRVConfig().setConfig(binding.rvMainCards, getContext(), anime));
         }else{
             Query ref = FirebaseDatabase.getInstance().getReference("AnimeList").limitToFirst(limit);
-            new FireBaseHelper(ref).readData((anime, keys) ->
+            new FireBaseHelper(ref, requireContext()).readData((anime, keys) ->
                     new MainScreenRVConfig().setConfig(binding.rvMainCards, getContext(), anime));
         }
 

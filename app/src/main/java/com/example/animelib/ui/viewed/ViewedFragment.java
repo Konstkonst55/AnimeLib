@@ -41,12 +41,13 @@ public class ViewedFragment extends Fragment {
     }
 
     private void init() {
-        query = FirebaseDatabase.getInstance().getReference("AnimeLib");
+        query = FirebaseDatabase.getInstance().getReference("AnimeList");
         initCardItems();
     }
 
     private void initCardItems() {
-        new FireBaseHelper(query).readViewedData((anime, keys) ->
+        //вывод данных
+        new FireBaseHelper(query, requireContext()).readViewedData((anime, keys) ->
                 new FavouriteRVConfig().setConfig(binding.rvViewed, getContext(), anime));
     }
 

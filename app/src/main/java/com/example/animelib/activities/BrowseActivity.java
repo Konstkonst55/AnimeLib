@@ -1,9 +1,9 @@
 package com.example.animelib.activities;
 
-import android.app.Dialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
 
 import com.example.animelib.R;
 import com.example.animelib.classes.DownloadImageTask;
@@ -18,11 +18,16 @@ import com.google.android.youtube.player.YouTubePlayer;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class BrowseActivity extends YouTubeBaseActivity {
 
     private ActivityBrowseBinding binding;
     private YouTubePlayer.OnInitializedListener oilPlayer;
     private Query query;
+    private SharedPreferences prefs;
+    private Set<String> favSet, viewSet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,41 +35,66 @@ public class BrowseActivity extends YouTubeBaseActivity {
         binding = ActivityBrowseBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        //инициализация плеера ютуб
         binding.bPlay.setOnClickListener(view -> binding.ypvVideo.initialize(YouTubePlayerConfig.API_KEY, oilPlayer));
 
+        //возврат назад
         binding.bBack.setOnClickListener(view -> onBackPressed());
 
+        //обновление данных страницы по скроллу вверх
         binding.srUpdate.setOnRefreshListener(() -> {
             loadData();
             binding.srUpdate.setRefreshing(false);
         });
 
+        //показ диалога с большой картинкой
         binding.ivPicture.setOnClickListener(view -> {
             ImageDialog imageDialog = new ImageDialog(this, getIntent().getStringExtra("image"));
             imageDialog.show();
         });
 
+        //добваление в избранное
         binding.cbFavourite.setOnClickListener(view -> {
+            if(binding.cbFavourite.isChecked()){
+                favSet.add(getIntent().getStringExtra("key"));
+            }else {
+                if(favSet != null){
+                    favSet.remove(getIntent().getStringExtra("key"));
+                }
+            }
+            prefs.edit().putStringSet("favourite", favSet).apply();
             Snackbar.make(BrowseActivity.this, view, "Сохранено", Snackbar.LENGTH_LONG).show();
-            new FireBaseHelper(query).setIsFavourite(getIntent().getStringExtra("key"), binding.cbFavourite.isChecked());
-            //todo переделать на локальное хранение просомтренных и избранных
         });
 
+        //добавление в просмотренное
         binding.cbViewed.setOnClickListener(view -> {
+            if(binding.cbViewed.isChecked()){
+                viewSet.add(getIntent().getStringExtra("key"));
+            }else {
+                if(viewSet != null){
+                    viewSet.remove(getIntent().getStringExtra("key"));
+                }
+            }
+            prefs.edit().putStringSet("viewed", viewSet).apply();
             Snackbar.make(BrowseActivity.this, view, "Сохранено", Snackbar.LENGTH_LONG).show();
-            new FireBaseHelper(query).setIsViewed(getIntent().getStringExtra("key"), binding.cbViewed.isChecked());
-            //todo переделать на локальное хранение просомтренных и избранных
         });
 
         init();
     }
 
+    //инициализация переменных
     private void init() {
+        prefs = getSharedPreferences("SAVES", Context.MODE_PRIVATE);
+        favSet = new HashSet<>();
+        viewSet = new HashSet<>();
+        favSet = prefs.getStringSet("favorite", new HashSet<>());
+        viewSet = prefs.getStringSet("viewed", new HashSet<>());
         loadData();
         playVideo();
         query = FirebaseDatabase.getInstance().getReference("AnimeLib");
     }
 
+    //загрузка данных
     private void loadData() {
         binding.tvNameBrowse.setText(getIntent().getStringExtra("name"));
         binding.tvType.setText(getString(R.string.title_type, getIntent().getStringExtra("type")));
@@ -73,11 +103,28 @@ public class BrowseActivity extends YouTubeBaseActivity {
         binding.tvDuration.setText(getString(R.string.title_duration, getIntent().getStringExtra("duration")));
         binding.tvDescription.setText(getString(R.string.title_description, getIntent().getStringExtra("description")));
         binding.tvDate.setText(getString(R.string.title_date, getIntent().getStringExtra("date")));
-        binding.cbFavourite.setChecked(getIntent().getBooleanExtra("is_favourite", false));
-        binding.cbViewed.setChecked(getIntent().getBooleanExtra("is_viewed", false));
+        binding.cbFavourite.setChecked(getIsFavourite());
+        binding.cbViewed.setChecked(getIsViewed());
         new DownloadImageTask(binding.ivPicture).execute(getIntent().getStringExtra("image"));
     }
 
+    public boolean getIsFavourite(){
+        if(prefs.getStringSet("favourite", new HashSet<>()).contains(getIntent().getStringExtra("key"))){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public boolean getIsViewed(){
+        if(prefs.getStringSet("viewed", new HashSet<>()).contains(getIntent().getStringExtra("key"))){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    //метод проигрывания видео
     private void playVideo() {
         oilPlayer = new YouTubePlayer.OnInitializedListener() {
             @Override

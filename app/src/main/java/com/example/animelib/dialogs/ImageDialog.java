@@ -13,6 +13,7 @@ import com.example.animelib.classes.DownloadImageTask;
 
 public class ImageDialog extends Dialog {
 
+    //диалог для показа изображения
     public ImageDialog(@NonNull Context context, String image) {
         super(context);
         this.setContentView(getLayoutInflater().inflate(R.layout.image_show_dialog, null));

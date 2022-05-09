@@ -18,6 +18,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
 import java.util.List;
+import java.util.Objects;
 
 public class FavouritesFragment extends Fragment {
 
@@ -37,12 +38,13 @@ public class FavouritesFragment extends Fragment {
     }
 
     private void init() {
-        query = FirebaseDatabase.getInstance().getReference("AnimeLib");
+        query = FirebaseDatabase.getInstance().getReference("AnimeList");
         initCardItem();
     }
 
     private void initCardItem() {
-        new FireBaseHelper(query).readFavouriteData((anime, keys) ->
+        //вывод данных
+        new FireBaseHelper(query, requireContext()).readFavouriteData((anime, keys) ->
                 new FavouriteRVConfig().setConfig(binding.rvFavourites, getContext(), anime));
     }
 

@@ -1,5 +1,8 @@
 package com.example.animelib.firebase;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Shader;
 import android.text.BoringLayout;
 import android.util.Log;
 
@@ -14,6 +17,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 
@@ -22,13 +26,19 @@ public class FireBaseHelper {
     private final DatabaseReference dbRef;
     private final List<Anime> animeList = new ArrayList<>();
     private final Query query;
+    private final Context context;
+    private SharedPreferences prefs;
 
-    public FireBaseHelper(Query query){
+    //конструктор
+    public FireBaseHelper(Query query, Context context){
         db = FirebaseDatabase.getInstance();
         this.dbRef = db.getReference("AnimeList");
         this.query = query;
+        this.context = context;
+        prefs = context.getSharedPreferences("SAVES", Context.MODE_PRIVATE);
     }
 
+    //чтение данных из базы
     public void readData(DataStatus dataStatus){
         query.addValueEventListener(new ValueEventListener() {
             @Override
@@ -49,8 +59,9 @@ public class FireBaseHelper {
         });
     }
 
+    //чтение из базы только избранных
     public void readFavouriteData(DataStatus dataStatus){
-        dbRef.addValueEventListener(new ValueEventListener() {
+        query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 animeList.clear();
@@ -58,8 +69,10 @@ public class FireBaseHelper {
                 for(DataSnapshot dataSnapshot : snapshot.getChildren()){
                     keys.add(dataSnapshot.getKey());
                     try{
-                        if(dataSnapshot.child("favourite").getValue(Boolean.class)){
-                            addListItems(dataSnapshot);
+                        for (String set : prefs.getStringSet("favourite", new HashSet<>())) {
+                            if(Objects.equals(dataSnapshot.getKey(), set)){
+                                addListItems(dataSnapshot);
+                            }
                         }
                         dataStatus.DataIsLoaded(animeList, keys);
                     }catch (Exception ignored){
@@ -75,6 +88,7 @@ public class FireBaseHelper {
         });
     }
 
+    //чтение из базы только просмотренных
     public void readViewedData(DataStatus dataStatus){
         query.addValueEventListener(new ValueEventListener() {
             @Override
@@ -84,8 +98,10 @@ public class FireBaseHelper {
                 for(DataSnapshot dataSnapshot : snapshot.getChildren()){
                     keys.add(dataSnapshot.getKey());
                     try{
-                        if(dataSnapshot.child("viewed").getValue(Boolean.class)){
-                            addListItems(dataSnapshot);
+                        for (String set : prefs.getStringSet("viewed", new HashSet<>())) {
+                            if(Objects.equals(dataSnapshot.getKey(), set)){
+                                addListItems(dataSnapshot);
+                            }
                         }
                         dataStatus.DataIsLoaded(animeList, keys);
                     }catch (Exception ignored){
@@ -101,6 +117,7 @@ public class FireBaseHelper {
         });
     }
 
+    //todo convert to local
     public void setIsFavourite(String key, Boolean bool){
         dbRef.child(key).child("favourite").setValue(bool);
     }
@@ -109,6 +126,7 @@ public class FireBaseHelper {
         dbRef.child(key).child("viewed").setValue(bool);
     }
 
+    //поиск данных
     public void searchData(String searchQuery, DataStatus dataStatus){
         query.orderByChild("AnimeList")
             .startAt(searchQuery)
@@ -132,6 +150,7 @@ public class FireBaseHelper {
             });
     }
 
+    //доавбление данных в лист
     private void addListItems(DataSnapshot dataSnapshot) {
         Anime anime = new Anime(dataSnapshot.child("name").getValue(String.class),
                 dataSnapshot.child("genre").getValue(String.class),
@@ -142,8 +161,6 @@ public class FireBaseHelper {
                 dataSnapshot.child("type").getValue(String.class),
                 dataSnapshot.child("description").getValue(String.class),
                 dataSnapshot.child("date").getValue(String.class),
-                dataSnapshot.child("favourite").getValue(Boolean.class),
-                dataSnapshot.child("viewed").getValue(Boolean.class),
                 dataSnapshot.getKey());
         animeList.add(anime);
         Log.i("ID", dataSnapshot.getKey());
