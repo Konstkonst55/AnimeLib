@@ -12,7 +12,14 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.animelib.adapters.favourite.FavouriteRVConfig;
+import com.example.animelib.adapters.main.MainScreenRVConfig;
 import com.example.animelib.databinding.FragmentViewedBinding;
+import com.example.animelib.firebase.Anime;
+import com.example.animelib.firebase.DataStatus;
+import com.example.animelib.firebase.FireBaseHelper;
+
+import java.util.List;
 
 public class ViewedFragment extends Fragment {
 
@@ -25,9 +32,37 @@ public class ViewedFragment extends Fragment {
         binding = FragmentViewedBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-
+        init();
 
         return root;
+    }
+
+    private void init() {
+        initCardItems();
+    }
+
+    private void initCardItems() {
+        new FireBaseHelper().readViewedData(new DataStatus() {
+            @Override
+            public void DataIsLoaded(List<Anime> anime, List<String> keys) {
+                new FavouriteRVConfig().setConfig(binding.rvViewed, getContext(), anime);
+            }
+
+            @Override
+            public void DataIsInserted() {
+
+            }
+
+            @Override
+            public void DataIsUpdated() {
+
+            }
+
+            @Override
+            public void DataIsDeleted() {
+
+            }
+        });
     }
 
     @Override

@@ -14,7 +14,7 @@
     <string name="title_type">Тип: %1$s</string>
     <string name="title_episode">Эпизоды: %1$s</string>
     <string name="title_genre">Жанр: %1$s</string>
-    <string name="title_duration">Длительность: %1$s</string>
+    <string name="title_duration">Длительность: %1$s мин.</string>
     <string name="title_date">Дата выпуска: %1$s</string>
     <string name="title_description">Описание: %1$s</string>
     <string name="title_trailer">Трейлер</string>

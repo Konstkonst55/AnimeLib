@@ -1,18 +1,25 @@
 package com.example.animelib.adapters.favourite;
 
-public class Favourite {
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
-    private String name;
+import androidx.recyclerview.widget.RecyclerView;
 
-    public Favourite(String name){
-        this.name = name;
+import com.example.animelib.R;
+import com.example.animelib.firebase.Anime;
+
+public class Favourite extends RecyclerView.ViewHolder {
+
+    private final TextView tvName;
+
+    public Favourite(ViewGroup parent, Context context){
+        super(LayoutInflater.from(context).inflate(R.layout.card_item_fav_viewed, parent, false));
+        tvName = itemView.findViewById(R.id.tvAnimeName);
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void bind(Anime anime){
+        tvName.setText(anime.getName());
     }
 }

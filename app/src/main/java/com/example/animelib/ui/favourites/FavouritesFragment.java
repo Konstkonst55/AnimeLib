@@ -8,19 +8,19 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.animelib.adapters.favourite.Favourite;
-import com.example.animelib.adapters.favourite.FavouriteAdapter;
+import com.example.animelib.adapters.favourite.FavouriteRVConfig;
 import com.example.animelib.databinding.FragmentFavouritesBinding;
+import com.example.animelib.firebase.Anime;
+import com.example.animelib.firebase.DataStatus;
+import com.example.animelib.firebase.FireBaseHelper;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class FavouritesFragment extends Fragment {
 
     private FavouritesViewModel favouritesViewModel;
     private FragmentFavouritesBinding binding;
-    ArrayList<Favourite> favourites = new ArrayList<>();
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         favouritesViewModel = new ViewModelProvider(this).get(FavouritesViewModel.class);
@@ -38,11 +38,27 @@ public class FavouritesFragment extends Fragment {
     }
 
     private void initCardItem() {
-        binding.rvFavourites.setLayoutManager(new LinearLayoutManager(getContext()));
-        binding.rvFavourites.setAdapter(new FavouriteAdapter(getContext(), favourites));
-        for (int i = 0; i < 20; i++) {
-            favourites.add(new Favourite("sdgsafasdfasfasdfsdafsdafasdfsadfsdafsdafsdafsdafsadfsadfasdfasdfasdfsadf"));
-        }
+        new FireBaseHelper().readFavouriteData(new DataStatus() {
+            @Override
+            public void DataIsLoaded(List<Anime> anime, List<String> keys) {
+                new FavouriteRVConfig().setConfig(binding.rvFavourites, getContext(), anime);
+            }
+
+            @Override
+            public void DataIsInserted() {
+
+            }
+
+            @Override
+            public void DataIsUpdated() {
+
+            }
+
+            @Override
+            public void DataIsDeleted() {
+
+            }
+        });
     }
 
     @Override

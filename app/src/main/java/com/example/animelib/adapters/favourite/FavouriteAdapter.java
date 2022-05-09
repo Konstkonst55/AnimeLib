@@ -2,6 +2,7 @@ package com.example.animelib.adapters.favourite;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,45 +13,51 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.animelib.R;
 import com.example.animelib.activities.BrowseActivity;
+import com.example.animelib.firebase.Anime;
 
 import java.util.List;
+import java.util.Objects;
 
-public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.ViewHolder> {
+public class FavouriteAdapter extends RecyclerView.Adapter<Favourite> {
 
-    private final LayoutInflater inflater;
-    private final List<Favourite> favouriteList;
+    private final List<Anime> cardList;
+    private final Context context;
 
-    public FavouriteAdapter(Context context, List<Favourite> favourites) {
-        this.favouriteList = favourites;
-        this.inflater = LayoutInflater.from(context);
+    public FavouriteAdapter(Context context, List<Anime> favourites) {
+        this.cardList = favourites;
+        this.context = context;
     }
 
     @NonNull
     @Override
-    public FavouriteAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.card_item_fav_viewed, parent, false);
-        return new ViewHolder(view);
+    public Favourite onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new Favourite(parent, context);
     }
 
     @Override
-    public void onBindViewHolder(FavouriteAdapter.ViewHolder holder, int position) {
-        Favourite favourite = favouriteList.get(position);
-        holder.name.setText(favourite.getName());
-        holder.viewMain.setOnClickListener(view -> view.getContext().startActivity(new Intent(view.getContext(), BrowseActivity.class)));
+    public void onBindViewHolder(Favourite holder, int position) {
+        holder.bind(cardList.get(position));
+        holder.itemView.setOnClickListener(view -> {
+            Intent i = new Intent(view.getContext(), BrowseActivity.class);
+            i.putExtra("key", cardList.get(position).getKey());
+            i.putExtra("name", cardList.get(position).getName());
+            i.putExtra("type", cardList.get(position).getType());
+            i.putExtra("episodes", cardList.get(position).getEpisodes());
+            i.putExtra("genre", cardList.get(position).getGenre());
+            i.putExtra("duration", cardList.get(position).getDuration());
+            i.putExtra("description", cardList.get(position).getDescription());
+            i.putExtra("date", cardList.get(position).getDate());
+            i.putExtra("is_favourite", cardList.get(position).getIsFavourite());
+            i.putExtra("is_viewed", cardList.get(position).getViewed());
+            i.putExtra("image", cardList.get(position).getImage());
+            i.putExtra("video", cardList.get(position).getVideo());
+            Log.i("ID_EXTRA", Objects.requireNonNull(cardList.get(position).getKey()));
+            view.getContext().startActivity(i);
+        });
     }
 
     @Override
     public int getItemCount() {
-        return favouriteList.size();
-    }
-
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        final TextView name;
-        final View viewMain;
-        ViewHolder(View view){
-            super(view);
-            name = view.findViewById(R.id.tvAnimeName);
-            viewMain = view;
-        }
+        return cardList.size();
     }
 }

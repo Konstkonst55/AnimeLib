@@ -5,9 +5,11 @@ import android.view.View;
 
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.example.animelib.R;
 import com.example.animelib.classes.DownloadImageTask;
 import com.example.animelib.classes.PlayerConfig;
 import com.example.animelib.databinding.ActivityBrowseBinding;
+import com.example.animelib.firebase.FireBaseHelper;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
@@ -33,9 +35,19 @@ public class BrowseActivity extends YouTubeBaseActivity {
             binding.srUpdate.setRefreshing(false);
         });
 
-        init();
+        binding.cbFavourite.setOnClickListener(view -> {
+            Snackbar.make(BrowseActivity.this, view, "Сохранено", Snackbar.LENGTH_LONG).show();
+            new FireBaseHelper().setIsFavourite(getIntent().getStringExtra("key"), binding.cbFavourite.isChecked());
+            //todo переделать на локальное хранение просомтренных и избранных
+        });
 
-        //todo binding.tvType.setText(getString(R.string.title_type, "nbg"));
+        binding.cbViewed.setOnClickListener(view -> {
+            Snackbar.make(BrowseActivity.this, view, "Сохранено", Snackbar.LENGTH_LONG).show();
+            new FireBaseHelper().setIsViewed(getIntent().getStringExtra("key"), binding.cbViewed.isChecked());
+            //todo переделать на локальное хранение просомтренных и избранных
+        });
+
+        init();
     }
 
     private void init() {
@@ -44,9 +56,16 @@ public class BrowseActivity extends YouTubeBaseActivity {
     }
 
     private void loadData() {
-        new DownloadImageTask(binding.ivPicture).execute(
-                "https://avatars.mds.yandex.net/get-kinopoisk-image/4303601/d94c0b17-8fd9-4a97-94f6-31623d8fc163/300x450"
-        );
+        binding.tvNameBrowse.setText(getIntent().getStringExtra("name"));
+        binding.tvType.setText(getString(R.string.title_type, getIntent().getStringExtra("type")));
+        binding.tvEpisode.setText(getString(R.string.title_episode, getIntent().getStringExtra("episodes")));
+        binding.tvGenre.setText(getString(R.string.title_genre, getIntent().getStringExtra("genre")));
+        binding.tvDuration.setText(getString(R.string.title_duration, getIntent().getStringExtra("duration")));
+        binding.tvDescription.setText(getString(R.string.title_description, getIntent().getStringExtra("description")));
+        binding.tvDate.setText(getString(R.string.title_date, getIntent().getStringExtra("date")));
+        binding.cbFavourite.setChecked(getIntent().getBooleanExtra("is_favourite", false));
+        binding.cbViewed.setChecked(getIntent().getBooleanExtra("is_viewed", false));
+        new DownloadImageTask(binding.ivPicture).execute(getIntent().getStringExtra("image"));
     }
 
     private void playVideo() {
@@ -54,7 +73,7 @@ public class BrowseActivity extends YouTubeBaseActivity {
             @Override
             public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
                 binding.ypvVideo.setVisibility(View.VISIBLE);
-                youTubePlayer.loadVideo("hRj5rQCC_XM");
+                youTubePlayer.loadVideo(getIntent().getStringExtra("video"));
                 youTubePlayer.play();
             }
 
