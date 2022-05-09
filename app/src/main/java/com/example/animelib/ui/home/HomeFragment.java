@@ -2,18 +2,26 @@ package com.example.animelib.ui.home;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.animelib.R;
 import com.example.animelib.adapters.main.MainScreenRVConfig;
 import com.example.animelib.databinding.FragmentHomeBinding;
 import com.example.animelib.firebase.Anime;
 import com.example.animelib.firebase.DataStatus;
 import com.example.animelib.firebase.FireBaseHelper;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 import java.util.List;
 
@@ -30,39 +38,34 @@ public class HomeFragment extends Fragment {
         init();
 
         binding.bShowMore.setOnClickListener(view -> {
-            //todo ShowMore
+            initCardItem(1);
         });
 
         return root;
     }
 
     private void init() {
-        initCardItem();
+        initCardItem(1);
+        //search("Дети на ");
     }
 
-    private void initCardItem() {
-        new FireBaseHelper().readData(new DataStatus() {
-            @Override
-            public void DataIsLoaded(List<Anime> anime, List<String> keys) {
-                new MainScreenRVConfig().setConfig(binding.rvMainCards, getContext(), anime);
-            }
+    private void initCardItem(int limit) {
+        if(!binding.bShowMore.isChecked()){
+            Query ref = FirebaseDatabase.getInstance().getReference("AnimeList");
+            new FireBaseHelper(ref).readData((anime, keys) ->
+                    new MainScreenRVConfig().setConfig(binding.rvMainCards, getContext(), anime));
+        }else{
+            Query ref = FirebaseDatabase.getInstance().getReference("AnimeList").limitToFirst(limit);
+            new FireBaseHelper(ref).readData((anime, keys) ->
+                    new MainScreenRVConfig().setConfig(binding.rvMainCards, getContext(), anime));
+        }
 
-            @Override
-            public void DataIsInserted() {
-
-            }
-
-            @Override
-            public void DataIsUpdated() {
-
-            }
-
-            @Override
-            public void DataIsDeleted() {
-
-            }
-        });
     }
+
+//    public void search(String query){
+//        new FireBaseHelper().searchData(query, (anime, keys) ->
+//                new MainScreenRVConfig().setConfig(binding.rvMainCards, getContext(), anime));
+//    }
 
     @Override
     public void onDestroyView() {

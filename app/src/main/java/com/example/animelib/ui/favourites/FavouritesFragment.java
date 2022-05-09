@@ -14,6 +14,8 @@ import com.example.animelib.databinding.FragmentFavouritesBinding;
 import com.example.animelib.firebase.Anime;
 import com.example.animelib.firebase.DataStatus;
 import com.example.animelib.firebase.FireBaseHelper;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 import java.util.List;
 
@@ -21,6 +23,7 @@ public class FavouritesFragment extends Fragment {
 
     private FavouritesViewModel favouritesViewModel;
     private FragmentFavouritesBinding binding;
+    private Query query;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         favouritesViewModel = new ViewModelProvider(this).get(FavouritesViewModel.class);
@@ -34,31 +37,13 @@ public class FavouritesFragment extends Fragment {
     }
 
     private void init() {
+        query = FirebaseDatabase.getInstance().getReference("AnimeLib");
         initCardItem();
     }
 
     private void initCardItem() {
-        new FireBaseHelper().readFavouriteData(new DataStatus() {
-            @Override
-            public void DataIsLoaded(List<Anime> anime, List<String> keys) {
-                new FavouriteRVConfig().setConfig(binding.rvFavourites, getContext(), anime);
-            }
-
-            @Override
-            public void DataIsInserted() {
-
-            }
-
-            @Override
-            public void DataIsUpdated() {
-
-            }
-
-            @Override
-            public void DataIsDeleted() {
-
-            }
-        });
+        new FireBaseHelper(query).readFavouriteData((anime, keys) ->
+                new FavouriteRVConfig().setConfig(binding.rvFavourites, getContext(), anime));
     }
 
     @Override

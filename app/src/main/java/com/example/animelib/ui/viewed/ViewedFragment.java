@@ -18,6 +18,8 @@ import com.example.animelib.databinding.FragmentViewedBinding;
 import com.example.animelib.firebase.Anime;
 import com.example.animelib.firebase.DataStatus;
 import com.example.animelib.firebase.FireBaseHelper;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 import java.util.List;
 
@@ -25,6 +27,7 @@ public class ViewedFragment extends Fragment {
 
     private ViewedViewModel viewedViewModel;
     private FragmentViewedBinding binding;
+    private Query query;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         viewedViewModel = new ViewModelProvider(this).get(ViewedViewModel.class);
@@ -38,31 +41,13 @@ public class ViewedFragment extends Fragment {
     }
 
     private void init() {
+        query = FirebaseDatabase.getInstance().getReference("AnimeLib");
         initCardItems();
     }
 
     private void initCardItems() {
-        new FireBaseHelper().readViewedData(new DataStatus() {
-            @Override
-            public void DataIsLoaded(List<Anime> anime, List<String> keys) {
-                new FavouriteRVConfig().setConfig(binding.rvViewed, getContext(), anime);
-            }
-
-            @Override
-            public void DataIsInserted() {
-
-            }
-
-            @Override
-            public void DataIsUpdated() {
-
-            }
-
-            @Override
-            public void DataIsDeleted() {
-
-            }
-        });
+        new FireBaseHelper(query).readViewedData((anime, keys) ->
+                new FavouriteRVConfig().setConfig(binding.rvViewed, getContext(), anime));
     }
 
     @Override

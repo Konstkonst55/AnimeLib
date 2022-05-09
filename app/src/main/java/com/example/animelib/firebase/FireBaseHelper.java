@@ -21,14 +21,16 @@ public class FireBaseHelper {
     private FirebaseDatabase db;
     private final DatabaseReference dbRef;
     private final List<Anime> animeList = new ArrayList<>();
+    private final Query query;
 
-    public FireBaseHelper(){
+    public FireBaseHelper(Query query){
         db = FirebaseDatabase.getInstance();
-        dbRef = db.getReference("AnimeList");
+        this.dbRef = db.getReference("AnimeList");
+        this.query = query;
     }
 
     public void readData(DataStatus dataStatus){
-        dbRef.addValueEventListener(new ValueEventListener() {
+        query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 animeList.clear();
@@ -74,7 +76,7 @@ public class FireBaseHelper {
     }
 
     public void readViewedData(DataStatus dataStatus){
-        dbRef.addValueEventListener(new ValueEventListener() {
+        query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 animeList.clear();
@@ -105,6 +107,29 @@ public class FireBaseHelper {
 
     public void setIsViewed(String key, Boolean bool){
         dbRef.child(key).child("viewed").setValue(bool);
+    }
+
+    public void searchData(String searchQuery, DataStatus dataStatus){
+        query.orderByChild("AnimeList")
+            .startAt(searchQuery)
+            .endAt(searchQuery+"\uf8ff")
+            .addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    animeList.clear();
+                    List<String> keys = new ArrayList<>();
+                    for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+                        keys.add(dataSnapshot.getKey());
+                        addListItems(dataSnapshot);
+                    }
+                    dataStatus.DataIsLoaded(animeList, keys);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    //todo
+                }
+            });
     }
 
     private void addListItems(DataSnapshot dataSnapshot) {

@@ -4,7 +4,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.example.animelib.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -38,8 +37,10 @@ public class MainActivity extends AppCompatActivity {
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home, R.id.navigation_viewed, R.id.navigation_favourites)
-                .build();
+                R.id.navigation_home,
+                R.id.navigation_viewed,
+                R.id.navigation_favourites
+        ).build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
@@ -60,11 +61,12 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.top_toolbar, menu);
         MenuItem myActionMenuItem = menu.findItem(R.id.action_search);
         searchView = (SearchView) myActionMenuItem.getActionView();
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                Toast.makeText(getApplicationContext(), "" + query, Toast.LENGTH_SHORT).show();
-                if( ! searchView.isIconified()) {
+
+                if(!searchView.isIconified()) {
                     searchView.setIconified(true);
                 }
                 myActionMenuItem.collapseActionView();

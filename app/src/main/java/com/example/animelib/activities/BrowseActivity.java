@@ -1,24 +1,28 @@
 package com.example.animelib.activities;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.View;
-
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import android.view.Window;
 
 import com.example.animelib.R;
 import com.example.animelib.classes.DownloadImageTask;
-import com.example.animelib.classes.PlayerConfig;
+import com.example.animelib.classes.YouTubePlayerConfig;
 import com.example.animelib.databinding.ActivityBrowseBinding;
+import com.example.animelib.dialogs.ImageDialog;
 import com.example.animelib.firebase.FireBaseHelper;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 public class BrowseActivity extends YouTubeBaseActivity {
 
     private ActivityBrowseBinding binding;
     private YouTubePlayer.OnInitializedListener oilPlayer;
+    private Query query;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +30,7 @@ public class BrowseActivity extends YouTubeBaseActivity {
         binding = ActivityBrowseBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        binding.bPlay.setOnClickListener(view -> binding.ypvVideo.initialize(PlayerConfig.API_KEY, oilPlayer));
+        binding.bPlay.setOnClickListener(view -> binding.ypvVideo.initialize(YouTubePlayerConfig.API_KEY, oilPlayer));
 
         binding.bBack.setOnClickListener(view -> onBackPressed());
 
@@ -35,15 +39,20 @@ public class BrowseActivity extends YouTubeBaseActivity {
             binding.srUpdate.setRefreshing(false);
         });
 
+        binding.ivPicture.setOnClickListener(view -> {
+            ImageDialog imageDialog = new ImageDialog(this, getIntent().getStringExtra("image"));
+            imageDialog.show();
+        });
+
         binding.cbFavourite.setOnClickListener(view -> {
             Snackbar.make(BrowseActivity.this, view, "Сохранено", Snackbar.LENGTH_LONG).show();
-            new FireBaseHelper().setIsFavourite(getIntent().getStringExtra("key"), binding.cbFavourite.isChecked());
+            new FireBaseHelper(query).setIsFavourite(getIntent().getStringExtra("key"), binding.cbFavourite.isChecked());
             //todo переделать на локальное хранение просомтренных и избранных
         });
 
         binding.cbViewed.setOnClickListener(view -> {
             Snackbar.make(BrowseActivity.this, view, "Сохранено", Snackbar.LENGTH_LONG).show();
-            new FireBaseHelper().setIsViewed(getIntent().getStringExtra("key"), binding.cbViewed.isChecked());
+            new FireBaseHelper(query).setIsViewed(getIntent().getStringExtra("key"), binding.cbViewed.isChecked());
             //todo переделать на локальное хранение просомтренных и избранных
         });
 
@@ -53,6 +62,7 @@ public class BrowseActivity extends YouTubeBaseActivity {
     private void init() {
         loadData();
         playVideo();
+        query = FirebaseDatabase.getInstance().getReference("AnimeLib");
     }
 
     private void loadData() {
