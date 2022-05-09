@@ -8,6 +8,7 @@ import android.view.View;
 import com.example.animelib.R;
 import com.example.animelib.classes.DownloadImageTask;
 import com.example.animelib.classes.YouTubePlayerConfig;
+import com.example.animelib.constatnts.Const;
 import com.example.animelib.databinding.ActivityBrowseBinding;
 import com.example.animelib.dialogs.ImageDialog;
 import com.example.animelib.firebase.FireBaseHelper;
@@ -25,7 +26,6 @@ public class BrowseActivity extends YouTubeBaseActivity {
 
     private ActivityBrowseBinding binding;
     private YouTubePlayer.OnInitializedListener oilPlayer;
-    private Query query;
     private SharedPreferences prefs;
     private Set<String> favSet, viewSet;
 
@@ -75,7 +75,7 @@ public class BrowseActivity extends YouTubeBaseActivity {
                     viewSet.remove(getIntent().getStringExtra("key"));
                 }
             }
-            prefs.edit().putStringSet("viewed", viewSet).apply();
+            prefs.edit().putStringSet(Const.VIEWED, viewSet).apply();
             Snackbar.make(BrowseActivity.this, view, "Сохранено", Snackbar.LENGTH_LONG).show();
         });
 
@@ -84,14 +84,13 @@ public class BrowseActivity extends YouTubeBaseActivity {
 
     //инициализация переменных
     private void init() {
-        prefs = getSharedPreferences("SAVES", Context.MODE_PRIVATE);
+        prefs = getSharedPreferences(Const.PREFERENCES_SAVES, Context.MODE_PRIVATE);
         favSet = new HashSet<>();
         viewSet = new HashSet<>();
-        favSet = prefs.getStringSet("favorite", new HashSet<>());
-        viewSet = prefs.getStringSet("viewed", new HashSet<>());
+        favSet = prefs.getStringSet(Const.FAVOURITE, new HashSet<>());
+        viewSet = prefs.getStringSet(Const.VIEWED, new HashSet<>());
         loadData();
         playVideo();
-        query = FirebaseDatabase.getInstance().getReference("AnimeLib");
     }
 
     //загрузка данных
@@ -109,19 +108,11 @@ public class BrowseActivity extends YouTubeBaseActivity {
     }
 
     public boolean getIsFavourite(){
-        if(prefs.getStringSet("favourite", new HashSet<>()).contains(getIntent().getStringExtra("key"))){
-            return true;
-        }else{
-            return false;
-        }
+        return prefs.getStringSet(Const.FAVOURITE, new HashSet<>()).contains(getIntent().getStringExtra("key"));
     }
 
     public boolean getIsViewed(){
-        if(prefs.getStringSet("viewed", new HashSet<>()).contains(getIntent().getStringExtra("key"))){
-            return true;
-        }else{
-            return false;
-        }
+        return prefs.getStringSet(Const.VIEWED, new HashSet<>()).contains(getIntent().getStringExtra("key"));
     }
 
     //метод проигрывания видео

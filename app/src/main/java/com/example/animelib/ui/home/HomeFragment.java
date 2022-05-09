@@ -1,5 +1,6 @@
 package com.example.animelib.ui.home;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -7,14 +8,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.animelib.R;
 import com.example.animelib.adapters.main.MainScreenRVConfig;
+import com.example.animelib.constatnts.Const;
 import com.example.animelib.databinding.FragmentHomeBinding;
 import com.example.animelib.firebase.Anime;
 import com.example.animelib.firebase.DataStatus;
@@ -29,6 +33,10 @@ public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
     private FragmentHomeBinding binding;
+    private static Context thisContext;
+    private static RecyclerView rvCards;
+    private static ToggleButton bShow;
+    private static final int itemsCountLimit = 3; //кол-во отображаемых записей до нажатия на кнопку показа
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
@@ -37,36 +45,44 @@ public class HomeFragment extends Fragment {
         
         init();
 
-        binding.bShowMore.setOnClickListener(view -> {
-            initCardItem(1);
-        });
+        binding.bShowMore.setOnClickListener(view -> initCardItem(itemsCountLimit));
 
         return root;
     }
 
     private void init() {
-        initCardItem(1);
-        //search("Дети на ");
+        bShow = binding.bShowMore;
+        binding.bShowMore.setSaveEnabled(false);
+        rvCards = binding.rvMainCards;
+        thisContext = requireContext();
+        initCardItem(itemsCountLimit);
     }
 
     private void initCardItem(int limit) {
         //вывод данных
         if(!binding.bShowMore.isChecked()){
-            Query ref = FirebaseDatabase.getInstance().getReference("AnimeList");
+            Query ref = FirebaseDatabase.getInstance().getReference(Const.DOCUMENT_TITLE);
             new FireBaseHelper(ref, requireContext()).readData((anime, keys) ->
                     new MainScreenRVConfig().setConfig(binding.rvMainCards, getContext(), anime));
         }else{
-            Query ref = FirebaseDatabase.getInstance().getReference("AnimeList").limitToFirst(limit);
+            Query ref = FirebaseDatabase.getInstance().getReference(Const.DOCUMENT_TITLE).limitToFirst(limit);
             new FireBaseHelper(ref, requireContext()).readData((anime, keys) ->
                     new MainScreenRVConfig().setConfig(binding.rvMainCards, getContext(), anime));
         }
 
     }
 
-//    public void search(String query){
-//        new FireBaseHelper().searchData(query, (anime, keys) ->
-//                new MainScreenRVConfig().setConfig(binding.rvMainCards, getContext(), anime));
-//    }
+    public static void search(String query){
+        bShow.setChecked(false);
+        Query ref = FirebaseDatabase
+                .getInstance()
+                .getReference(Const.DOCUMENT_TITLE)
+                .orderByChild("name")
+                .startAt(query)
+                .endAt(query + Const.DOT);
+        new FireBaseHelper(ref, thisContext).readData((anime, keys) ->
+                new MainScreenRVConfig().setConfig(rvCards, thisContext, anime));
+    }
 
     @Override
     public void onDestroyView() {

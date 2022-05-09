@@ -1,16 +1,22 @@
 package com.example.animelib.activities;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.animelib.R;
+import com.example.animelib.ui.favourites.FavouritesFragment;
+import com.example.animelib.ui.home.HomeFragment;
+import com.example.animelib.ui.viewed.ViewedFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -18,6 +24,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.example.animelib.databinding.ActivityMainBinding;
 
+import java.util.List;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
@@ -68,15 +75,17 @@ public class MainActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-
                 if(!searchView.isIconified()) {
                     searchView.setIconified(true);
                 }
                 myActionMenuItem.collapseActionView();
+
                 return false;
             }
+
             @Override
             public boolean onQueryTextChange(String s) {
+                HomeFragment.search(s);
                 return false;
             }
         });

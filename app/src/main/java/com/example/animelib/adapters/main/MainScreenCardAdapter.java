@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.animelib.activities.BrowseActivity;
+import com.example.animelib.constatnts.LogTag;
 import com.example.animelib.firebase.Anime;
 
 import java.util.List;
@@ -46,7 +47,7 @@ public class MainScreenCardAdapter extends RecyclerView.Adapter<MainScreenCard> 
             i.putExtra("date", cardList.get(position).getDate());
             i.putExtra("image", cardList.get(position).getImage());
             i.putExtra("video", cardList.get(position).getVideo());
-            Log.i("ID_EXTRA", Objects.requireNonNull(cardList.get(position).getKey()));
+            Log.i(LogTag.ID_PUT_STRING, Objects.requireNonNull(cardList.get(position).getKey()));
             view.getContext().startActivity(i);
         });
     }

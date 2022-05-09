@@ -1,5 +1,6 @@
 package com.example.animelib.ui.viewed;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,9 +12,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.animelib.adapters.favourite.FavouriteRVConfig;
 import com.example.animelib.adapters.main.MainScreenRVConfig;
+import com.example.animelib.constatnts.Const;
 import com.example.animelib.databinding.FragmentViewedBinding;
 import com.example.animelib.firebase.Anime;
 import com.example.animelib.firebase.DataStatus;
@@ -28,6 +31,8 @@ public class ViewedFragment extends Fragment {
     private ViewedViewModel viewedViewModel;
     private FragmentViewedBinding binding;
     private Query query;
+    private static Context thisContext;
+    private static RecyclerView rvCards;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         viewedViewModel = new ViewModelProvider(this).get(ViewedViewModel.class);
@@ -41,7 +46,9 @@ public class ViewedFragment extends Fragment {
     }
 
     private void init() {
-        query = FirebaseDatabase.getInstance().getReference("AnimeList");
+        thisContext = requireContext();
+        rvCards = binding.rvViewed;
+        query = FirebaseDatabase.getInstance().getReference(Const.DOCUMENT_TITLE);
         initCardItems();
     }
 
@@ -49,6 +56,17 @@ public class ViewedFragment extends Fragment {
         //вывод данных
         new FireBaseHelper(query, requireContext()).readViewedData((anime, keys) ->
                 new FavouriteRVConfig().setConfig(binding.rvViewed, getContext(), anime));
+    }
+
+    public static void search(String query){
+        Query ref = FirebaseDatabase
+                .getInstance()
+                .getReference(Const.DOCUMENT_TITLE)
+                .orderByChild("name")
+                .startAt(query)
+                .endAt(query + Const.DOT);
+        new FireBaseHelper(ref, thisContext).readViewedData((anime, keys) ->
+                new MainScreenRVConfig().setConfig(rvCards, thisContext, anime));
     }
 
     @Override

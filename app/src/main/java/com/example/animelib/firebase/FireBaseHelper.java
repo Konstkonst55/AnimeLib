@@ -8,6 +8,8 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.animelib.constatnts.Const;
+import com.example.animelib.constatnts.LogTag;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,10 +34,10 @@ public class FireBaseHelper {
     //конструктор
     public FireBaseHelper(Query query, Context context){
         db = FirebaseDatabase.getInstance();
-        this.dbRef = db.getReference("AnimeList");
+        this.dbRef = db.getReference(Const.DOCUMENT_TITLE);
         this.query = query;
         this.context = context;
-        prefs = context.getSharedPreferences("SAVES", Context.MODE_PRIVATE);
+        prefs = context.getSharedPreferences(Const.PREFERENCES_SAVES, Context.MODE_PRIVATE);
     }
 
     //чтение данных из базы
@@ -69,7 +71,7 @@ public class FireBaseHelper {
                 for(DataSnapshot dataSnapshot : snapshot.getChildren()){
                     keys.add(dataSnapshot.getKey());
                     try{
-                        for (String set : prefs.getStringSet("favourite", new HashSet<>())) {
+                        for (String set : prefs.getStringSet(Const.FAVOURITE, new HashSet<>())) {
                             if(Objects.equals(dataSnapshot.getKey(), set)){
                                 addListItems(dataSnapshot);
                             }
@@ -98,7 +100,7 @@ public class FireBaseHelper {
                 for(DataSnapshot dataSnapshot : snapshot.getChildren()){
                     keys.add(dataSnapshot.getKey());
                     try{
-                        for (String set : prefs.getStringSet("viewed", new HashSet<>())) {
+                        for (String set : prefs.getStringSet(Const.VIEWED, new HashSet<>())) {
                             if(Objects.equals(dataSnapshot.getKey(), set)){
                                 addListItems(dataSnapshot);
                             }
@@ -117,39 +119,6 @@ public class FireBaseHelper {
         });
     }
 
-    //todo convert to local
-    public void setIsFavourite(String key, Boolean bool){
-        dbRef.child(key).child("favourite").setValue(bool);
-    }
-
-    public void setIsViewed(String key, Boolean bool){
-        dbRef.child(key).child("viewed").setValue(bool);
-    }
-
-    //поиск данных
-    public void searchData(String searchQuery, DataStatus dataStatus){
-        query.orderByChild("AnimeList")
-            .startAt(searchQuery)
-            .endAt(searchQuery+"\uf8ff")
-            .addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    animeList.clear();
-                    List<String> keys = new ArrayList<>();
-                    for(DataSnapshot dataSnapshot : snapshot.getChildren()){
-                        keys.add(dataSnapshot.getKey());
-                        addListItems(dataSnapshot);
-                    }
-                    dataStatus.DataIsLoaded(animeList, keys);
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    //todo
-                }
-            });
-    }
-
     //доавбление данных в лист
     private void addListItems(DataSnapshot dataSnapshot) {
         Anime anime = new Anime(dataSnapshot.child("name").getValue(String.class),
@@ -163,6 +132,6 @@ public class FireBaseHelper {
                 dataSnapshot.child("date").getValue(String.class),
                 dataSnapshot.getKey());
         animeList.add(anime);
-        Log.i("ID", dataSnapshot.getKey());
+        Log.i(LogTag.ID, dataSnapshot.getKey());
     }
 }
