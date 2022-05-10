@@ -5,12 +5,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.example.animelib.R;
 import com.example.animelib.classes.DownloadImageTask;
 import com.example.animelib.classes.YouTubePlayerConfig;
 import com.example.animelib.constatnts.Const;
+import com.example.animelib.constatnts.LogTag;
 import com.example.animelib.databinding.ActivityBrowseBinding;
 import com.example.animelib.dialogs.ImageDialog;
 import com.example.animelib.firebase.FireBaseHelper;
@@ -125,10 +127,17 @@ public class BrowseActivity extends YouTubeBaseActivity {
 
     //октрытие видео по ссылке
     private void playVideoInWeb(){
-        String url = "https://www.youtube.com/watch?v=" + getIntent().getStringExtra("video");
-        Intent i = new Intent(Intent.ACTION_VIEW);
-        i.setData(Uri.parse(url));
-        startActivity(i);
+        String urlForWeb = "https://www.youtube.com/watch?v=" + getIntent().getStringExtra("video");
+        String urlForApp = "vnd.youtube://" + getIntent().getStringExtra("video");
+
+        try{
+            //попытка запуска приложения ютуб
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(urlForApp)));
+        }catch (Exception exception){
+            //если приложение не установлено то откроется браузер
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(urlForWeb)));
+        }
+
     }
 
     //метод проигрывания видео
@@ -144,6 +153,8 @@ public class BrowseActivity extends YouTubeBaseActivity {
             @Override
             public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
                 Snackbar.make(binding.getRoot(), "Ошибка воспроизведения", Snackbar.LENGTH_LONG).show();
+                Log.i(LogTag.ERROR, youTubeInitializationResult.name());
+                //youTubeInitializationResult.getErrorDialog(BrowseActivity.this, 1);
             }
         };
     }
