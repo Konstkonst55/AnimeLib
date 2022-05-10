@@ -13,7 +13,10 @@ public class MainScreenRVConfig {
 
     public void setConfig(RecyclerView rv, Context context, List<Anime> animeList){
         MainScreenCardAdapter mainScreenCardAdapter = new MainScreenCardAdapter(animeList, context);
-        rv.setLayoutManager(new LinearLayoutManager(context));
+        LinearLayoutManager lm = new LinearLayoutManager(context);
+        lm.setReverseLayout(true);
+        lm.setStackFromEnd(true);
+        rv.setLayoutManager(lm);
         rv.setAdapter(mainScreenCardAdapter);
     }
 }

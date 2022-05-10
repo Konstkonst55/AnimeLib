@@ -61,11 +61,11 @@ public class HomeFragment extends Fragment {
     private static void initCardItem(int limit) {
         //вывод данных
         if(!bShow.isChecked()){
-            Query ref = FirebaseDatabase.getInstance().getReference(Const.DOCUMENT_TITLE);
+            Query ref = FirebaseDatabase.getInstance().getReference(Const.DOCUMENT_TITLE).orderByChild("popularity");
             new FireBaseHelper(ref, thisContext).readData((anime, keys) ->
                     new MainScreenRVConfig().setConfig(rvCards, thisContext, anime));
         }else{
-            Query ref = FirebaseDatabase.getInstance().getReference(Const.DOCUMENT_TITLE).limitToFirst(limit);
+            Query ref = FirebaseDatabase.getInstance().getReference(Const.DOCUMENT_TITLE).orderByChild("popularity").limitToLast(limit);
             new FireBaseHelper(ref, thisContext).readData((anime, keys) ->
                     new MainScreenRVConfig().setConfig(rvCards, thisContext, anime));
         }
