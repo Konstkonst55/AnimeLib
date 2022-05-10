@@ -42,7 +42,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvMainCards"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="match_parent"/>
 
             <ToggleButton
                 android:id="@+id/bShowMore"
@@ -51,13 +51,14 @@
                 android:textAllCaps="false"
                 android:background="@drawable/bg_toggle_button"
                 style="@style/txt"
+                android:textColor="@color/white"
                 android:textOff="@string/hide"
                 android:textOn="@string/show_more"
                 android:checked="true"
                 android:layout_marginTop="20dp"
+                android:layout_marginBottom="80dp"
                 android:layout_marginStart="15dp"
-                android:layout_marginEnd="15dp"
-                android:layout_marginBottom="60dp"/>
+                android:layout_marginEnd="15dp" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

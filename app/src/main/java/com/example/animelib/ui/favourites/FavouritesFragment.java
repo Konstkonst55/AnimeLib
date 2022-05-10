@@ -28,7 +28,7 @@ public class FavouritesFragment extends Fragment {
 
     private FavouritesViewModel favouritesViewModel;
     private FragmentFavouritesBinding binding;
-    private Query query;
+    private static Query query;
     private static Context thisContext;
     private static RecyclerView rvCards;
 
@@ -50,10 +50,10 @@ public class FavouritesFragment extends Fragment {
         initCardItem();
     }
 
-    private void initCardItem() {
+    private static void initCardItem() {
         //вывод данных
-        new FireBaseHelper(query, requireContext()).readFavouriteData((anime, keys) ->
-                new FavouriteRVConfig().setConfig(binding.rvFavourites, getContext(), anime));
+        new FireBaseHelper(query, thisContext).readFavouriteData((anime, keys) ->
+                new FavouriteRVConfig().setConfig(rvCards, thisContext, anime));
     }
 
     public static void search(String query){
@@ -65,6 +65,10 @@ public class FavouritesFragment extends Fragment {
                 .endAt(query + Const.DOT);
         new FireBaseHelper(ref, thisContext).readFavouriteData((anime, keys) ->
                 new FavouriteRVConfig().setConfig(rvCards, thisContext, anime));
+    }
+
+    public static void updateList(){
+        initCardItem();
     }
 
     @Override

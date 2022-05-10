@@ -58,18 +58,17 @@ public class HomeFragment extends Fragment {
         initCardItem(itemsCountLimit);
     }
 
-    private void initCardItem(int limit) {
+    private static void initCardItem(int limit) {
         //вывод данных
-        if(!binding.bShowMore.isChecked()){
+        if(!bShow.isChecked()){
             Query ref = FirebaseDatabase.getInstance().getReference(Const.DOCUMENT_TITLE);
-            new FireBaseHelper(ref, requireContext()).readData((anime, keys) ->
-                    new MainScreenRVConfig().setConfig(binding.rvMainCards, getContext(), anime));
+            new FireBaseHelper(ref, thisContext).readData((anime, keys) ->
+                    new MainScreenRVConfig().setConfig(rvCards, thisContext, anime));
         }else{
             Query ref = FirebaseDatabase.getInstance().getReference(Const.DOCUMENT_TITLE).limitToFirst(limit);
-            new FireBaseHelper(ref, requireContext()).readData((anime, keys) ->
-                    new MainScreenRVConfig().setConfig(binding.rvMainCards, getContext(), anime));
+            new FireBaseHelper(ref, thisContext).readData((anime, keys) ->
+                    new MainScreenRVConfig().setConfig(rvCards, thisContext, anime));
         }
-
     }
 
     public static void search(String query){
@@ -82,6 +81,10 @@ public class HomeFragment extends Fragment {
                 .endAt(query + Const.DOT);
         new FireBaseHelper(ref, thisContext).readData((anime, keys) ->
                 new MainScreenRVConfig().setConfig(rvCards, thisContext, anime));
+    }
+
+    public static void updateList(){
+        initCardItem(itemsCountLimit);
     }
 
     @Override

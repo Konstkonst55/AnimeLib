@@ -12,11 +12,12 @@ public class Anime {
     private String description;
     private String date;
     private String KEY;
+    private Boolean isPopularity;
 
     public Anime(){
     }
 
-    public Anime(String name, String genre, String episodes, String duration, String image, String video, String type, String description, String date, String key) {
+    public Anime(String name, String genre, String episodes, String duration, String image, String video, String type, String description, String date, String key, Boolean isPopularity) {
         this.name = name;
         this.genre = genre;
         this.episodes = episodes;
@@ -27,6 +28,7 @@ public class Anime {
         this.description = description;
         this.date = date;
         this.KEY = key;
+        this.isPopularity = isPopularity;
     }
 
     public String getName() {
@@ -107,5 +109,13 @@ public class Anime {
 
     public void setKey(String KEY) {
         this.KEY = KEY;
+    }
+
+    public Boolean getPopularity() {
+        return isPopularity;
+    }
+
+    public void setPopularity(Boolean popularity) {
+        isPopularity = popularity;
     }
 }

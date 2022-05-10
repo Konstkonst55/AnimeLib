@@ -74,17 +74,18 @@
                     app:flexWrap="wrap">
 
                     <androidx.cardview.widget.CardView
-                        android:layout_width="170dp"
-                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="200dp"
                         android:layout_gravity="top|center_horizontal"
                         app:cardCornerRadius="15dp"
+                        android:layout_marginStart="15dp"
                         android:layout_marginBottom="15dp"
                         android:layout_marginEnd="15dp"
                         android:elevation="8dp">
 
                         <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="match_parent">
 
                             <ProgressBar
                                 android:layout_width="wrap_content"
@@ -96,6 +97,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:contentDescription="@string/cd_image"
+                                android:layout_centerVertical="true"
+                                android:layout_centerHorizontal="true"
                                 android:scaleType="centerCrop" />
                         </RelativeLayout>
                     </androidx.cardview.widget.CardView>
@@ -110,7 +113,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/app_name"
-                            style="@style/txt_header"/>
+                            android:textSize="22sp"
+                            android:fontFamily="@font/ubuntu_bold"/>
 
                         <ImageView
                             android:layout_width="match_parent"
@@ -124,7 +128,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/title_type"
-                            style="@style/txt"
+                            android:fontFamily="@font/ubuntu_italic"
+                            android:textSize="16sp"
                             android:layout_marginTop="15dp"/>
 
                         <TextView
@@ -132,7 +137,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/title_episode"
-                            style="@style/txt"
+                            android:fontFamily="@font/ubuntu_italic"
+                            android:textSize="16sp"
                             android:layout_marginTop="5dp"/>
 
                         <TextView
@@ -140,7 +146,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/title_genre"
-                            style="@style/txt"
+                            android:fontFamily="@font/ubuntu_italic"
+                            android:textSize="16sp"
                             android:layout_marginTop="5dp"/>
 
                         <TextView
@@ -148,7 +155,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/title_duration"
-                            style="@style/txt"
+                            android:fontFamily="@font/ubuntu_italic"
+                            android:textSize="16sp"
                             android:layout_marginTop="5dp"/>
 
                         <TextView
@@ -156,7 +164,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/title_date"
-                            style="@style/txt"
+                            android:fontFamily="@font/ubuntu_italic"
+                            android:textSize="16sp"
                             android:layout_marginTop="5dp"/>
                     </LinearLayout>
                 </com.google.android.flexbox.FlexboxLayout>
@@ -166,48 +175,49 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/title_description"
-                    style="@style/txt"
+                    android:fontFamily="@font/ubuntu_italic"
+                    android:textSize="16sp"
                     android:layout_marginTop="10dp"/>
 
-                <RelativeLayout
+                <com.google.android.flexbox.FlexboxLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginTop="30dp">
+                    android:layout_marginTop="30dp"
+                    app:flexWrap="wrap"
+                    app:alignItems="center">
 
                     <TextView
                         android:id="@+id/tvTrailer"
-                        style="@style/txt_header"
+                        android:fontFamily="@font/ubuntu_bold"
+                        android:textSize="22sp"
+                        android:layout_marginEnd="40dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true"
+                        android:gravity="center_vertical|start"
                         android:text="@string/title_trailer" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/bPlay"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginStart="40dp"
-                        android:layout_toEndOf="@+id/tvTrailer"
+                        android:layout_marginEnd="10dp"
                         android:text="@string/title_watch"
+                        android:textColor="@color/white"
+                        style="@style/txt"
                         android:textAllCaps="false"
                         app:cornerRadius="1000dp" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/bPlayWeb"
-                        android:layout_width="wrap_content"
+                        android:layout_width="50dp"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginStart="10dp"
-                        android:layout_toEndOf="@+id/bPlay"
                         android:foreground="@drawable/ic_open_in_web"
                         android:foregroundGravity="center"
+                        android:foregroundTint="@color/white"
                         android:textAllCaps="false"
                         app:cornerRadius="1000dp" />
-                </RelativeLayout>
+                </com.google.android.flexbox.FlexboxLayout>
 
                 <com.google.android.youtube.player.YouTubePlayerView
                     android:id="@+id/ypvVideo"

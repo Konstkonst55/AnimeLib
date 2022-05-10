@@ -2,15 +2,12 @@ package com.example.animelib.firebase;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Shader;
-import android.text.BoringLayout;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.example.animelib.constatnts.Const;
 import com.example.animelib.constatnts.LogTag;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -24,19 +21,14 @@ import java.util.List;
 import java.util.Objects;
 
 public class FireBaseHelper {
-    private FirebaseDatabase db;
-    private final DatabaseReference dbRef;
     private final List<Anime> animeList = new ArrayList<>();
     private final Query query;
-    private final Context context;
-    private SharedPreferences prefs;
+    private final SharedPreferences prefs;
+
 
     //конструктор
     public FireBaseHelper(Query query, Context context){
-        db = FirebaseDatabase.getInstance();
-        this.dbRef = db.getReference(Const.DOCUMENT_TITLE);
         this.query = query;
-        this.context = context;
         prefs = context.getSharedPreferences(Const.PREFERENCES_SAVES, Context.MODE_PRIVATE);
     }
 
@@ -130,7 +122,8 @@ public class FireBaseHelper {
                 dataSnapshot.child("type").getValue(String.class),
                 dataSnapshot.child("description").getValue(String.class),
                 dataSnapshot.child("date").getValue(String.class),
-                dataSnapshot.getKey());
+                dataSnapshot.getKey(),
+                dataSnapshot.child("popularity").getValue(Boolean.class));
         animeList.add(anime);
         Log.i(LogTag.ID, dataSnapshot.getKey());
     }

@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private SearchView searchView;
     private ActionBar toolbar;
-    private NavController navController;
+    private static NavController navController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +66,23 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setLogo(R.drawable.ic_animelib);
         toolbar.setDisplayShowTitleEnabled(false);
         toolbar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.black)));
+    }
+
+    public static void updateRV(){
+        try {
+            int f = Objects.requireNonNull(navController.getCurrentDestination()).getId();
+            switch (f){
+                case R.id.navigation_home:
+                    HomeFragment.updateList();
+                    break;
+                case R.id.navigation_viewed:
+                    ViewedFragment.updateList();
+                    break;
+                case R.id.navigation_favourites:
+                    FavouritesFragment.updateList();
+                    break;
+            }
+        } catch (Exception ignored){ }
     }
 
     //функция поиска внутри тулбара

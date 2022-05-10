@@ -32,6 +32,7 @@ public class BrowseActivity extends YouTubeBaseActivity {
     private YouTubePlayer.OnInitializedListener oilPlayer;
     private SharedPreferences prefs;
     private Set<String> favSet, viewSet;
+    private FirebaseDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +71,7 @@ public class BrowseActivity extends YouTubeBaseActivity {
                 }
             }
             prefs.edit().putStringSet("favourite", favSet).apply();
+            MainActivity.updateRV();
             Snackbar.make(BrowseActivity.this, view, "Сохранено", Snackbar.LENGTH_LONG).show();
         });
 
@@ -83,6 +85,7 @@ public class BrowseActivity extends YouTubeBaseActivity {
                 }
             }
             prefs.edit().putStringSet(Const.VIEWED, viewSet).apply();
+            MainActivity.updateRV();
             Snackbar.make(BrowseActivity.this, view, "Сохранено", Snackbar.LENGTH_LONG).show();
         });
 
