@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.animelib.R;
 import com.example.animelib.ui.favourites.FavouritesFragment;
@@ -23,6 +24,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.animelib.databinding.ActivityMainBinding;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 import java.util.Objects;
@@ -32,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private SearchView searchView;
     private ActionBar toolbar;
+    private NavController navController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
                 R.id.navigation_viewed,
                 R.id.navigation_favourites
         ).build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
     }
@@ -83,9 +86,23 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
 
+            @SuppressLint("NonConstantResourceId")
             @Override
             public boolean onQueryTextChange(String s) {
-                HomeFragment.search(s);
+                try {
+                    int f = Objects.requireNonNull(navController.getCurrentDestination()).getId();
+                    switch (f){
+                        case R.id.navigation_home:
+                            HomeFragment.search(s);
+                            break;
+                        case R.id.navigation_viewed:
+                            ViewedFragment.search(s);
+                            break;
+                        case R.id.navigation_favourites:
+                            FavouritesFragment.search(s);
+                            break;
+                    }
+                } catch (Exception ignored){ }
                 return false;
             }
         });

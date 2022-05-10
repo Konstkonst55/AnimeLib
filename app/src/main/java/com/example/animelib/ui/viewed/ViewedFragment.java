@@ -66,7 +66,7 @@ public class ViewedFragment extends Fragment {
                 .startAt(query)
                 .endAt(query + Const.DOT);
         new FireBaseHelper(ref, thisContext).readViewedData((anime, keys) ->
-                new MainScreenRVConfig().setConfig(rvCards, thisContext, anime));
+                new FavouriteRVConfig().setConfig(rvCards, thisContext, anime));
     }
 
     @Override

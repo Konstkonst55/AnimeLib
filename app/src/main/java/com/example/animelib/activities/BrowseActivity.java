@@ -1,7 +1,9 @@
 package com.example.animelib.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 
@@ -37,6 +39,9 @@ public class BrowseActivity extends YouTubeBaseActivity {
 
         //инициализация плеера ютуб
         binding.bPlay.setOnClickListener(view -> binding.ypvVideo.initialize(YouTubePlayerConfig.API_KEY, oilPlayer));
+
+        //запуск видео в браузере
+        binding.bPlayWeb.setOnClickListener(view -> playVideoInWeb());
 
         //возврат назад
         binding.bBack.setOnClickListener(view -> onBackPressed());
@@ -89,6 +94,7 @@ public class BrowseActivity extends YouTubeBaseActivity {
         viewSet = new HashSet<>();
         favSet = prefs.getStringSet(Const.FAVOURITE, new HashSet<>());
         viewSet = prefs.getStringSet(Const.VIEWED, new HashSet<>());
+
         loadData();
         playVideo();
     }
@@ -107,12 +113,22 @@ public class BrowseActivity extends YouTubeBaseActivity {
         new DownloadImageTask(binding.ivPicture).execute(getIntent().getStringExtra("image"));
     }
 
+    //проверка ключа на то избранное ли данное аниме
     public boolean getIsFavourite(){
         return prefs.getStringSet(Const.FAVOURITE, new HashSet<>()).contains(getIntent().getStringExtra("key"));
     }
 
+    //проверка ключа на то просмотренное ли данное аниме
     public boolean getIsViewed(){
         return prefs.getStringSet(Const.VIEWED, new HashSet<>()).contains(getIntent().getStringExtra("key"));
+    }
+
+    //октрытие видео по ссылке
+    private void playVideoInWeb(){
+        String url = "https://www.youtube.com/watch?v=" + getIntent().getStringExtra("video");
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(url));
+        startActivity(i);
     }
 
     //метод проигрывания видео

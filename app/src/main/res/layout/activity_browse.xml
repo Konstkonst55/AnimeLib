@@ -188,11 +188,23 @@
                         android:id="@+id/bPlay"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="40dp"
                         android:layout_toEndOf="@+id/tvTrailer"
                         android:text="@string/title_watch"
+                        android:textAllCaps="false"
+                        app:cornerRadius="1000dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/bPlayWeb"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="10dp"
+                        android:layout_toEndOf="@+id/bPlay"
+                        android:foreground="@drawable/ic_open_in_web"
+                        android:foregroundGravity="center"
                         android:textAllCaps="false"
                         app:cornerRadius="1000dp" />
                 </RelativeLayout>

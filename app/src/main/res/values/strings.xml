@@ -21,10 +21,8 @@
     <string name="cd_play">Play</string>
     <string name="cd_back">Back</string>
     <string name="title_browse">Просмотр</string>
-    <string name="title_watch">Смотреть</string>
+    <string name="title_watch">Смотреть тут</string>
     <string name="cd_divider">Divider</string>
     <string name="cd_logo">Logo</string>
     <string name="hide">Свернуть</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

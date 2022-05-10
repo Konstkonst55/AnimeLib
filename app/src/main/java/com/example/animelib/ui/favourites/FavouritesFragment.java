@@ -64,7 +64,7 @@ public class FavouritesFragment extends Fragment {
                 .startAt(query)
                 .endAt(query + Const.DOT);
         new FireBaseHelper(ref, thisContext).readFavouriteData((anime, keys) ->
-                new MainScreenRVConfig().setConfig(rvCards, thisContext, anime));
+                new FavouriteRVConfig().setConfig(rvCards, thisContext, anime));
     }
 
     @Override
