@@ -32,4 +32,20 @@
         <item name="fontFamily">@font/ubuntu_italic</item>
         <item name="android:textSize">16sp</item>
     </style>
+
+    <style name="divider" parent="Theme.AppCompat.DayNight">
+        <item name="android:src">@drawable/divider</item>
+    </style>
+
+    <style name="logo_tb" parent="Theme.AppCompat.DayNight">
+        <item name="android:src">@drawable/ic_animelib</item>
+    </style>
+
+    <style name="icons_tint" parent="Theme.AppCompat.DayNight">
+        <item name="tint">@color/orange</item>
+    </style>
+
+    <style name="toggle_btn" parent="Theme.AppCompat.DayNight">
+        <item name="android:background">@drawable/bg_toggle_button</item>
+    </style>
 </resources>

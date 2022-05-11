@@ -19,7 +19,6 @@
             android:layout_height="match_parent"
             android:contentDescription="@string/cd_back"
             android:src="@drawable/ic_arrow_back"
-            android:foregroundTint="@color/orange"
             android:background="@color/transparent"
             android:layout_gravity="start|center_vertical"/>
 
@@ -28,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:contentDescription="@string/cd_logo"
-            android:src="@drawable/ic_animelib"/>
+            style="@style/logo_tb"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -64,8 +63,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:padding="15dp">
+                android:orientation="vertical">
 
                 <com.google.android.flexbox.FlexboxLayout
                     android:layout_width="match_parent"
@@ -74,18 +72,17 @@
                     app:flexWrap="wrap">
 
                     <androidx.cardview.widget.CardView
-                        android:layout_width="wrap_content"
-                        android:layout_height="200dp"
+                        android:layout_width="200dp"
+                        android:layout_height="280dp"
                         android:layout_gravity="top|center_horizontal"
                         app:cardCornerRadius="15dp"
-                        android:layout_marginStart="15dp"
-                        android:layout_marginBottom="15dp"
-                        android:layout_marginEnd="15dp"
+                        android:layout_margin="15dp"
                         android:elevation="8dp">
 
                         <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center">
 
                             <ProgressBar
                                 android:layout_width="wrap_content"
@@ -96,9 +93,8 @@
                                 android:id="@+id/ivPicture"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
+                                android:layout_centerInParent="true"
                                 android:contentDescription="@string/cd_image"
-                                android:layout_centerVertical="true"
-                                android:layout_centerHorizontal="true"
                                 android:scaleType="centerCrop" />
                         </RelativeLayout>
                     </androidx.cardview.widget.CardView>
@@ -106,7 +102,8 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:layout_margin="15dp">
 
                         <TextView
                             android:id="@+id/tvNameBrowse"
@@ -119,7 +116,7 @@
                         <ImageView
                             android:layout_width="match_parent"
                             android:layout_height="3dp"
-                            android:src="@drawable/divider"
+                            style="@style/divider"
                             android:layout_marginTop="15dp"
                             android:contentDescription="@string/cd_divider"/>
 
@@ -175,15 +172,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/title_description"
+                    android:layout_margin="15dp"
                     android:fontFamily="@font/ubuntu_italic"
-                    android:textSize="16sp"
-                    android:layout_marginTop="10dp"/>
+                    android:textSize="16sp" />
 
                 <com.google.android.flexbox.FlexboxLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginTop="30dp"
+                    android:layout_margin="15dp"
                     app:flexWrap="wrap"
                     app:alignItems="center">
 

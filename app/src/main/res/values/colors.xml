@@ -12,6 +12,9 @@
     <color name="orange_dark">#A66E00</color>
     <color name="orange_light">#FFBF44</color>
     <color name="transparent">#00000000</color>
+    <color name="purple">#AE79E3</color>
+    <color name="purple_dark">#5F437C</color>
+    <color name="dark_gray">#141414</color>
 
     <color name="popular_red">#FF5959</color>
 </resources>

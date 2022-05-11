@@ -57,7 +57,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="3dp"
-                android:src="@drawable/divider"
+                style="@style/divider"
                 android:layout_marginStart="15dp"
                 android:layout_marginEnd="15dp"
                 android:contentDescription="@string/cd_divider"/>
@@ -83,8 +83,8 @@
                     android:id="@+id/ivIsFavourite"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:tint="@color/orange"
                     android:src="@drawable/ic_star_fill"
+                    style="@style/icons_tint"
                     android:layout_marginEnd="10dp"
                     android:contentDescription="@string/cd_image"
                     android:visibility="gone"/>
@@ -93,7 +93,7 @@
                     android:id="@+id/ivIsViewed"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:tint="@color/orange"
+                    style="@style/icons_tint"
                     android:src="@drawable/ic_viewed_fill"
                     android:contentDescription="@string/cd_image"
                     android:visibility="gone"/>

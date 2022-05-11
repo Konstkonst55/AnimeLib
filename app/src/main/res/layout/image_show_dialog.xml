@@ -30,6 +30,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:background="@drawable/ic_cancel"
+        android:backgroundTint="@color/popular_red"
         android:contentDescription="@string/cd_back"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -2,6 +2,7 @@ package com.example.animelib.activities;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Menu;
@@ -63,9 +64,18 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setHomeButtonEnabled(true);
         toolbar.setDisplayShowHomeEnabled(true);
         toolbar.setDisplayUseLogoEnabled(true);
-        toolbar.setLogo(R.drawable.ic_animelib);
         toolbar.setDisplayShowTitleEnabled(false);
         toolbar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.black)));
+
+        int currentNightMode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        switch (currentNightMode) {
+            case Configuration.UI_MODE_NIGHT_NO:
+                toolbar.setLogo(R.drawable.ic_animelib);
+                break;
+            case Configuration.UI_MODE_NIGHT_YES:
+                toolbar.setLogo(R.drawable.ic_animelib_d);
+                break;
+        }
     }
 
     public static void updateRV(){
